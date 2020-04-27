@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>implicit_coordination</name>
+  <version>1.0.0</version>
+  <description>Implicit coordination algorithm for multirobot non-adversarial search</description>
+
+  <maintainer email="jaco.banfi@gmail.com">Jacopo Banfi</maintainer>
+
+  <license>GPLv3</license>
+
+  <author email="jaco.banfi@gmail.com">Jacopo Banfi</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roslib</build_depend>
+
+</package>
