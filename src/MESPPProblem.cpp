@@ -1,6 +1,6 @@
 #include "MESPPProblem.h"
 
-MESPPProblem::MESPPProblem(std::string df): data_folder(df)
+MESPPProblem::MESPPProblem(std::string df): dataFolder(df)
 {
     loadStartInfo();
     loadMotionModel();
@@ -13,39 +13,39 @@ double MESPPProblem::getGamma(){
 }
 
 double MESPPProblem::getNVertices(){
-    return n_vertices;
+    return nVertices;
 }
 
 double MESPPProblem::getNRobots(){
-    return n_robots;
+    return nRobots;
 }
 
 double MESPPProblem::getNRounds(){
-    return n_rounds;
+    return nRounds;
 }
 
-int MESPPProblem::getStartVertexByRobot(int robot_id){
-    return starting_vertices[robot_id];
+int MESPPProblem::getStartVertexByRobot(int robotId){
+    return startingVertices[robotId];
 }
 
 Eigen::VectorXd MESPPProblem::getStartingBelief(){
-    return starting_b;
+    return startingBelief;
 }
 
 Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> MESPPProblem::getMMatrix(){
-    return M_matrix;
+    return MMatrix;
 }
 
-std::set<int> MESPPProblem::getNeighbors(int vertex_id){
-    return adjacencyList[vertex_id];
+std::set<int> MESPPProblem::getNeighbors(int vertexId){
+    return adjacencyList[vertexId];
 }
 
-Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> MESPPProblem::getCMatrix(int robot_id, int vertex_id){
-    return C_matrices[robot_id][vertex_id];
+Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> MESPPProblem::getCMatrix(int robotId, int vertexId){
+    return CMatrices[robotId][vertexId];
 }
 
 void MESPPProblem::loadStartInfo(){
-    std::ifstream file(ros::package::getPath("implicit_coordination") + "/data/" + data_folder + "/start.txt");
+    std::ifstream file(ros::package::getPath("implicit_coordination") + "/data/" + dataFolder + "/start.txt");
     std::string line;
 
     // read gamma
@@ -57,71 +57,71 @@ void MESPPProblem::loadStartInfo(){
 
     //std::cout << gamma << std::endl;
 
-    // read n_vertices
+    // read nVertices
     std::getline(file, line);
 
     linestream = std::stringstream(line);
 
-    linestream >> n_vertices;
+    linestream >> nVertices;
 
-    //std::cout << n_vertices << std::endl;
+    //std::cout << nVertices << std::endl;
 
-    // read starting_vertices
+    // read startingVertices
     std::getline(file, line);
-    int robot_id = 1;
+    int robotId = 1;
     int vertex;
     linestream = std::stringstream(line);
 
     while(linestream >> vertex){
-        starting_vertices.insert({robot_id, vertex});
-        robot_id += 1;
+        startingVertices.insert({robotId, vertex});
+        robotId += 1;
     }
 
-    n_robots = robot_id - 1;
+    nRobots = robotId - 1;
 
-    // read starting_b
+    // read startingBelief
     std::getline(file, line);
     double val;
     linestream = std::stringstream(line);
-    starting_b = Eigen::VectorXd(n_vertices + 1);
+    startingBelief = Eigen::VectorXd(nVertices + 1);
     int i = 0;
     while(linestream >> val){
-        starting_b[i] = val;
+        startingBelief[i] = val;
         i += 1;
     }
-    //std::cout << starting_b << std::endl;
+    //std::cout << startingBelief << std::endl;
 
-    // read n_rounds
+    // read nRounds
     std::getline(file, line);
 
     linestream = std::stringstream(line);
 
-    linestream >> n_rounds;
+    linestream >> nRounds;
 
-    //std::cout << n_rounds << std::endl;
+    //std::cout << nRounds << std::endl;
 }
 
 void MESPPProblem::loadMotionModel(){
-    std::ifstream file(ros::package::getPath("implicit_coordination") + "/data/" + data_folder + "/M.txt");
+    std::ifstream file(ros::package::getPath("implicit_coordination") + "/data/" + dataFolder + "/M.txt");
     std::string line;
 
-    M_matrix.resize(n_vertices + 1, n_vertices + 1);
+    MMatrix.resize(nVertices + 1, nVertices + 1);
 
     std::getline(file, line);
 
     std::stringstream linestream(line);
 
-    for(int i = 0; i < n_vertices + 1; i++){
-        for(int j = 0; j < n_vertices + 1; j++){
-            linestream >> M_matrix(i, j); 
+    for(int i = 0; i < nVertices + 1; i++){
+        for(int j = 0; j < nVertices + 1; j++){
+            linestream >> MMatrix(i, j); 
         }
     }
 
-    //std::cout << M_matrix << std::endl;
+    //std::cout << MMatrix << std::endl;
 }
 
 void MESPPProblem::loadAdjacencyList(){
-    std::ifstream file(ros::package::getPath("implicit_coordination") + "/data/" + data_folder + "/adj.txt");
+    std::ifstream file(ros::package::getPath("implicit_coordination") + "/data/" + dataFolder + "/adj.txt");
     std::string line;
 
     while(std::getline(file, line)){
@@ -131,24 +131,24 @@ void MESPPProblem::loadAdjacencyList(){
         }
 
         std::stringstream linestream(line);
-        int vertex_id;
-        linestream >> vertex_id;
+        int vertexId;
+        linestream >> vertexId;
 
         std::set<int> neighbors;
-        neighbors.insert(vertex_id);
+        neighbors.insert(vertexId);
         int neighbor;
 
         while(linestream >> neighbor){
             neighbors.insert(neighbor);
         }
 
-        adjacencyList.insert({vertex_id, neighbors});
+        adjacencyList.insert({vertexId, neighbors});
     }
 
 }
 
 void MESPPProblem::loadCaptureMatrices(){
-    std::ifstream file(ros::package::getPath("implicit_coordination") + "/data/" + data_folder + "/C.txt");
+    std::ifstream file(ros::package::getPath("implicit_coordination") + "/data/" + dataFolder + "/C.txt");
     std::string line;
 
     while(std::getline(file, line)){
@@ -158,22 +158,22 @@ void MESPPProblem::loadCaptureMatrices(){
         }
 
         std::stringstream linestream(line);
-        int vertex_id, robot_id;
-        linestream >> robot_id >> vertex_id;
+        int vertexId, robotId;
+        linestream >> robotId >> vertexId;
 
-        Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> C_matrix;
-        C_matrix.resize(n_vertices + 1, n_vertices + 1);
+        Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> CMatrix;
+        CMatrix.resize(nVertices + 1, nVertices + 1);
 
-        for(int i = 0; i < n_vertices + 1; i++){
-            for(int j = 0; j < n_vertices + 1; j++){
-                linestream >> C_matrix(i, j); 
+        for(int i = 0; i < nVertices + 1; i++){
+            for(int j = 0; j < nVertices + 1; j++){
+                linestream >> CMatrix(i, j); 
             }
         }
 
-        //std::cout << robot_id << vertex_id << std::endl;
-        //std::cout << C_matrix << std::endl;
+        //std::cout << robotId << vertexId << std::endl;
+        //std::cout << CMatrix << std::endl;
 
-        C_matrices[robot_id][vertex_id] = C_matrix;
+        CMatrices[robotId][vertexId] = CMatrix;
 
     }
 }

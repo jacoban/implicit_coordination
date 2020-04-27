@@ -26,37 +26,37 @@ public:
 
     double getNRounds();
 
-    int getStartVertexByRobot(int robot_id);
+    int getStartVertexByRobot(int robotId);
 
     Eigen::VectorXd getStartingBelief();
 
     Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> getMMatrix();
 
-    std::set<int> getNeighbors(int vertex_id);
+    std::set<int> getNeighbors(int vertexId);
 
-    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> getCMatrix(int robot_id, int vertex_id);
+    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> getCMatrix(int robotId, int vertexId);
 
 private:
 
-    std::string data_folder;
+    std::string dataFolder;
 
     double gamma;
 
-    int n_vertices;
+    int nVertices;
 
-    int n_robots;
+    int nRobots;
 
-    int n_rounds;
+    int nRounds;
 
-    std::unordered_map<int, int> starting_vertices;
+    std::unordered_map<int, int> startingVertices;
 
-    Eigen::VectorXd starting_b;
+    Eigen::VectorXd startingBelief;
 
-    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> M_matrix;
+    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> MMatrix;
 
     std::unordered_map<int, std::set<int>> adjacencyList;
 
-    std::unordered_map<int, std::unordered_map<int, Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>>> C_matrices;     
+    std::unordered_map<int, std::unordered_map<int, Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>>> CMatrices;     
 
     void loadStartInfo();
 
