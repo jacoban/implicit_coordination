@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "MESPPProblem.h"
+#include "AbstractPlanner.h"
 
 int main(int argc, char** argv)
 {
@@ -14,6 +15,12 @@ int main(int argc, char** argv)
     std::string data_folder = argv[1];
 
     MESPPProblem problem(data_folder);
+
+    AbstractPlanner planner(problem);
+
+    planner.makePlan();
+
+    planner.logResults();
 
     exit(0);
 }

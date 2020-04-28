@@ -1,5 +1,5 @@
-#ifndef INCLUDE_MESPPPROBLEM_H_
-#define INCLUDE_MESPPPROBLEM_H_
+#ifndef INCLUDE_STATE_H_
+#define INCLUDE_STATE_H_
 
 #include <unordered_map>
 #include <set>

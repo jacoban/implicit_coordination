@@ -11,6 +11,8 @@
 #include <Eigen/Core>
 #include <ros/package.h>
 
+#include "State.h"
+
 class MESPPProblem
 {
 
@@ -18,23 +20,29 @@ public:
 
     MESPPProblem(std::string data_folder);
 
-    double getGamma();
+    std::string getDataFolder() const;
 
-    double getNVertices();
+    double getGamma() const;
 
-    double getNRobots();
+    double getNVertices() const;
 
-    double getNRounds();
+    double getNRobots() const;
 
-    int getStartVertexByRobot(int robotId);
+    double getNRounds() const;
 
-    Eigen::VectorXd getStartingBelief();
+    int getStartVertexByRobot(int robotId) const;
 
-    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> getMMatrix();
+    std::unordered_map<int, int> getStartingVertices() const;
 
-    std::set<int> getNeighbors(int vertexId);
+    Eigen::VectorXd getStartingBelief() const;
 
-    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> getCMatrix(int robotId, int vertexId);
+    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> getMMatrix() const;
+
+    std::set<int> getNeighbors(int vertexId) const;
+
+    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> getCMatrix(int robotId, int vertexId) const;
+
+    State getInitialState() const;
 
 private:
 

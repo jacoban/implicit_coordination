@@ -5,6 +5,7 @@ step(step), currObj(currObj), currVertices(currVertices), belief(belief)
 {
 }
 
-std::set<int> State::getNextActions(int robotId, const std::unordered_map<int, std::set<int>>& adjacencyList){
-    return adjacencyList[currVertices[robotId]];
+std::set<int> State::getNextActions(int robotId, const std::unordered_map<int, std::set<int>>& adjacencyList) const
+{
+    return adjacencyList.at(currVertices.at(robotId));
 }

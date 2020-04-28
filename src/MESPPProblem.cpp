@@ -8,40 +8,64 @@ MESPPProblem::MESPPProblem(std::string df): dataFolder(df)
     loadAdjacencyList();
 }
 
-double MESPPProblem::getGamma(){
+std::string MESPPProblem::getDataFolder() const
+{
+    return dataFolder;
+}
+
+double MESPPProblem::getGamma() const
+{
     return gamma;
 }
 
-double MESPPProblem::getNVertices(){
+double MESPPProblem::getNVertices() const
+{
     return nVertices;
 }
 
-double MESPPProblem::getNRobots(){
+double MESPPProblem::getNRobots() const
+{
     return nRobots;
 }
 
-double MESPPProblem::getNRounds(){
+double MESPPProblem::getNRounds() const
+{
     return nRounds;
 }
 
-int MESPPProblem::getStartVertexByRobot(int robotId){
-    return startingVertices[robotId];
+int MESPPProblem::getStartVertexByRobot(int robotId) const
+{
+    return startingVertices.at(robotId);
 }
 
-Eigen::VectorXd MESPPProblem::getStartingBelief(){
+std::unordered_map<int, int> MESPPProblem::getStartingVertices() const
+{
+    return startingVertices;
+}
+
+Eigen::VectorXd MESPPProblem::getStartingBelief() const
+{
     return startingBelief;
 }
 
-Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> MESPPProblem::getMMatrix(){
+Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> MESPPProblem::getMMatrix() const
+{
     return MMatrix;
 }
 
-std::set<int> MESPPProblem::getNeighbors(int vertexId){
-    return adjacencyList[vertexId];
+std::set<int> MESPPProblem::getNeighbors(int vertexId) const
+{
+    return adjacencyList.at(vertexId);
 }
 
-Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> MESPPProblem::getCMatrix(int robotId, int vertexId){
-    return CMatrices[robotId][vertexId];
+Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> MESPPProblem::getCMatrix(int robotId, int vertexId) const
+{
+    return CMatrices.at(robotId).at(vertexId);
+}
+
+State MESPPProblem::getInitialState() const
+{
+    return State(0, 0, startingVertices, startingBelief);
 }
 
 void MESPPProblem::loadStartInfo(){
