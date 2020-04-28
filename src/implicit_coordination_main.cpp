@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "MESPPProblem.h"
-#include "AbstractPlanner.h"
+#include "ImplicitCoordinationPlanner.h"
 
 int main(int argc, char** argv)
 {
@@ -16,7 +16,7 @@ int main(int argc, char** argv)
 
     MESPPProblem problem(data_folder);
 
-    AbstractPlanner planner(problem);
+    ImplicitCoordinationPlanner planner(problem);
 
     planner.makePlan();
 

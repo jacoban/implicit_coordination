@@ -13,6 +13,11 @@ std::string MESPPProblem::getDataFolder() const
     return dataFolder;
 }
 
+int MESPPProblem::getHorizon() const
+{
+    return horizon;
+}
+
 double MESPPProblem::getGamma() const
 {
     return gamma;
@@ -65,17 +70,26 @@ Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> MESPPProblem::getCMatrix(i
 
 State MESPPProblem::getInitialState() const
 {
-    return State(0, 0, startingVertices, startingBelief);
+    return State(0, 0, startingVertices, startingBelief, nullptr);
 }
 
 void MESPPProblem::loadStartInfo(){
     std::ifstream file(ros::package::getPath("implicit_coordination") + "/data/" + dataFolder + "/start.txt");
     std::string line;
 
-    // read gamma
+    // read horizon
     std::getline(file, line);
 
     std::stringstream linestream(line);
+
+    linestream >> horizon;
+
+    //std::cout << horizon << std::endl;
+
+    // read gamma
+    std::getline(file, line);
+
+    linestream = std::stringstream(line);
 
     linestream >> gamma;
 

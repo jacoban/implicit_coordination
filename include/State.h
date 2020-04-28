@@ -2,6 +2,7 @@
 #define INCLUDE_STATE_H_
 
 #include <unordered_map>
+#include <vector>
 #include <set>
 
 #include <Eigen/Core>
@@ -10,10 +11,15 @@ class State
 {
 
 public:
-    State(int step, double currObj, std::unordered_map<int, int> currVertices, Eigen::VectorXd belief);
+    State(int step, double currObj, std::unordered_map<int, int> currVertices, Eigen::VectorXd belief, State* parent);
 
     // an action is nothing but a legal move of a robot
     std::set<int> getNextActions(int robotId, const std::unordered_map<int, std::set<int>>& adjacencyList) const;
+
+    std::vector<int> getPathToThisState(int robotId);
+
+    // could also add the centralized variant that retrieves the joint paths
+    // not needed by ImplicitCoordinationPlanner
 
 private:
 
@@ -24,6 +30,8 @@ private:
     std::unordered_map<int, int> currVertices;
 
     Eigen::VectorXd belief;
+
+    State* parent;
 
 };
 

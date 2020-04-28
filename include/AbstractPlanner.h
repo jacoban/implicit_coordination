@@ -25,9 +25,9 @@ public:
 protected:
 
     // easy to implement centralized version if needed
-    //virtual bool makePlanImpl() = 0;
+    virtual void makePlanImpl() = 0;
 
-    MESPPProblem problem;
+    const MESPPProblem problem;
 
     double bestObj;
 

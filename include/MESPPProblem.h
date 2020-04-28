@@ -22,6 +22,8 @@ public:
 
     std::string getDataFolder() const;
 
+    int getHorizon() const;
+
     double getGamma() const;
 
     double getNVertices() const;
@@ -47,6 +49,8 @@ public:
 private:
 
     std::string dataFolder;
+
+    int horizon;
 
     double gamma;
 
