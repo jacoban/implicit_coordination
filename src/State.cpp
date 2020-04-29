@@ -5,9 +5,19 @@ step(step), currObj(currObj), currVertices(currVertices), belief(belief), parent
 {
 }
 
-std::set<int> State::getNextActions(int robotId, const std::unordered_map<int, std::set<int>>& adjacencyList) const
+int State::getStep() const
 {
-    return adjacencyList.at(currVertices.at(robotId));
+    return step;
+}
+
+double State::getCurrObj() const
+{
+    return currObj;
+}
+
+Eigen::VectorXd State::getBelief() const
+{
+    return belief;
 }
 
 std::vector<int> State::getPathToThisState(int robotId)
@@ -25,4 +35,9 @@ std::vector<int> State::getPathToThisState(int robotId)
     std::reverse(path.begin(), path.end()); 
 
     return path;
+}
+
+int State::getCurrVertex(int robotId) const
+{
+    return currVertices.at(robotId);
 }

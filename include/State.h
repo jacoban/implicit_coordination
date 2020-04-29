@@ -13,10 +13,15 @@ class State
 public:
     State(int step, double currObj, std::unordered_map<int, int> currVertices, Eigen::VectorXd belief, State* parent);
 
-    // an action is nothing but a legal move of a robot
-    std::set<int> getNextActions(int robotId, const std::unordered_map<int, std::set<int>>& adjacencyList) const;
+    int getStep() const;
+
+    double getCurrObj() const;
+
+    Eigen::VectorXd getBelief() const;
 
     std::vector<int> getPathToThisState(int robotId);
+
+    int getCurrVertex(int robotId) const;
 
     // could also add the centralized variant that retrieves the joint paths
     // not needed by ImplicitCoordinationPlanner

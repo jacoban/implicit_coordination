@@ -7,29 +7,80 @@ ImplicitCoordinationPlanner::ImplicitCoordinationPlanner(const MESPPProblem& pro
 
 void ImplicitCoordinationPlanner::makePlanImpl()
 {
-    std::unordered_map<int, std::vector<int>> currPaths = getInitialPaths();
+    bestPaths = getInitialPaths();
 
     for(int i = 0; i < problem.getNRounds(); i++){
-        planRound(currPaths);
+        planRound();
     }
 }
 
-void ImplicitCoordinationPlanner::planRound(std::unordered_map<int, std::vector<int>>& currPaths)
+void ImplicitCoordinationPlanner::planRound()
 {
     for(int i = 1; i <= problem.getNRobots(); i++){
-        updateSingle(i, currPaths);
+        updateSingle(i);
     }
 }
 
-void ImplicitCoordinationPlanner::updateSingle(int robotId, std::unordered_map<int, std::vector<int>>& currPaths)
+void ImplicitCoordinationPlanner::updateSingle(int robotId)
 {
-    State currState = problem.getInitialState();
-    std::vector<State> stack{currState};
+    State initState = problem.getInitialState();
+    std::vector<State> stack{initState};
 
     while(!stack.empty())
     {
+        State currState = stack.back();
+        stack.pop_back();
+
+        if(currState.getStep() == problem.getHorizon() && currState.getCurrObj() > bestObj)
+        {
+            //update 
+            bestObj = currState.getCurrObj();
+            bestPaths[robotId] = currState.getPathToThisState(robotId);
+        }
+        else if(currState.getStep() < problem.getHorizon())
+        {
+            for(int nextVertex: problem.getNeighbors(currState.getCurrVertex(robotId)))
+            {
+                //stack.push_back(getNewState(currState, robotId, nextVertex));
+            }
+        }
 
     }
+}
+
+State ImplicitCoordinationPlanner::getNewState(State& currState, int robotId, int newVertex)
+{
+    std::unordered_map<int, int> newVertices;
+
+    int newStep = currState.getStep() + 1;
+    
+    for(int i = 1; i <= problem.getNRobots(); i++)
+    {
+        if(i == robotId)
+        {
+            newVertices.insert({robotId, newVertex});
+        }
+        else
+        {
+            newVertices.insert({i, bestPaths.at(i)[newStep]});
+        }
+    }
+
+    // compute new belief vector
+    
+    // first motion model update
+    Eigen::VectorXd newBelief = currState.getBelief() * problem.getMMatrix();
+
+    // then apply capture matrices
+    for(int i = 1; i <= problem.getNRobots(); i++)
+    {
+        newBelief *= problem.getCMatrix(i, newVertices.at(i));
+    }
+
+    double newObj = currState.getCurrObj() + pow(problem.getGamma(), newStep);
+
+    return State(newStep, newObj, newVertices, newBelief, &currState);
+
 }
 
 std::unordered_map<int, std::vector<int>> ImplicitCoordinationPlanner::getInitialPaths()
