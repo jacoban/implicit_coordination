@@ -77,7 +77,7 @@ State ImplicitCoordinationPlanner::getNewState(State& currState, int robotId, in
         newBelief *= problem.getCMatrix(i, newVertices.at(i));
     }
 
-    double newObj = currState.getCurrObj() + pow(problem.getGamma(), newStep);
+    double newObj = currState.getCurrObj() + pow(problem.getGamma(), newStep) * newBelief(0);
 
     return State(newStep, newObj, newVertices, newBelief, &currState);
 
