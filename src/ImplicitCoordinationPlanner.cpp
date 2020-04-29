@@ -41,7 +41,7 @@ void ImplicitCoordinationPlanner::updateSingle(int robotId)
         {
             for(int nextVertex: problem.getNeighbors(currState.getCurrVertex(robotId)))
             {
-                //stack.push_back(getNewState(currState, robotId, nextVertex));
+                stack.push_back(getNewState(currState, robotId, nextVertex));
             }
         }
 
