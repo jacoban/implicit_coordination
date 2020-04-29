@@ -36,7 +36,7 @@ public:
 
     std::unordered_map<int, int> getStartingVertices() const;
 
-    Eigen::VectorXd getStartingBelief() const;
+    Eigen::RowVectorXd getStartingBelief() const;
 
     Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> getMMatrix() const;
 
@@ -44,7 +44,7 @@ public:
 
     Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> getCMatrix(int robotId, int vertexId) const;
 
-    State getInitialState() const;
+    State* getInitialState() const;
 
 private:
 
@@ -62,7 +62,7 @@ private:
 
     std::unordered_map<int, int> startingVertices;
 
-    Eigen::VectorXd startingBelief;
+    Eigen::RowVectorXd startingBelief;
 
     Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> MMatrix;
 

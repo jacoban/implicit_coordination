@@ -10,6 +10,7 @@ void ImplicitCoordinationPlanner::makePlanImpl()
     bestPaths = getInitialPaths();
 
     for(int i = 0; i < problem.getNRounds(); i++){
+        std::cout << "First round of planning..." << std::endl;
         planRound();
     }
 }
@@ -17,42 +18,54 @@ void ImplicitCoordinationPlanner::makePlanImpl()
 void ImplicitCoordinationPlanner::planRound()
 {
     for(int i = 1; i <= problem.getNRobots(); i++){
+        std::cout << "Updating path of robot " << i << std::endl;
         updateSingle(i);
     }
 }
 
 void ImplicitCoordinationPlanner::updateSingle(int robotId)
 {
-    State initState = problem.getInitialState();
-    std::vector<State> stack{initState};
+    exploredStates.push_back(problem.getInitialState());
+    std::vector<State*> stack{exploredStates[0]};
 
     while(!stack.empty())
     {
-        State currState = stack.back();
+
+        State* currStatePtr = stack.back();
         stack.pop_back();
 
-        if(currState.getStep() == problem.getHorizon() && currState.getCurrObj() > bestObj)
+        if(currStatePtr->getStep() == problem.getHorizon() && currStatePtr->getCurrObj() > bestObj)
         {
-            //update 
-            bestObj = currState.getCurrObj();
-            bestPaths[robotId] = currState.getPathToThisState(robotId);
+            //update
+            std::cout << "Incumbent updated!" << std::endl; 
+            bestObj = currStatePtr->getCurrObj();
+            bestPaths[robotId] = currStatePtr->getPathToThisState(robotId);
         }
-        else if(currState.getStep() < problem.getHorizon())
+        else if(currStatePtr->getStep() < problem.getHorizon())
         {
-            for(int nextVertex: problem.getNeighbors(currState.getCurrVertex(robotId)))
+            for(int nextVertex: problem.getNeighbors(currStatePtr->getCurrVertex(robotId)))
             {
-                stack.push_back(getNewState(currState, robotId, nextVertex));
+                exploredStates.push_back(getNewState(currStatePtr, robotId, nextVertex));
+                stack.push_back(exploredStates.back());
             }
         }
 
     }
+
+    // free memory for next robot
+    for(State* statePtr: exploredStates)
+    {
+        delete statePtr;
+    }
+
+    exploredStates.clear();
 }
 
-State ImplicitCoordinationPlanner::getNewState(State& currState, int robotId, int newVertex)
+State* ImplicitCoordinationPlanner::getNewState(State* currStatePtr, int robotId, int newVertex)
 {
     std::unordered_map<int, int> newVertices;
 
-    int newStep = currState.getStep() + 1;
+    int newStep = currStatePtr->getStep() + 1;
     
     for(int i = 1; i <= problem.getNRobots(); i++)
     {
@@ -69,17 +82,17 @@ State ImplicitCoordinationPlanner::getNewState(State& currState, int robotId, in
     // compute new belief vector
     
     // first motion model update
-    Eigen::VectorXd newBelief = currState.getBelief() * problem.getMMatrix();
+    Eigen::RowVectorXd newBelief = currStatePtr->getBelief() * problem.getMMatrix();
 
     // then apply capture matrices
     for(int i = 1; i <= problem.getNRobots(); i++)
     {
-        newBelief *= problem.getCMatrix(i, newVertices.at(i));
+        newBelief = newBelief * problem.getCMatrix(i, newVertices.at(i));
     }
 
-    double newObj = currState.getCurrObj() + pow(problem.getGamma(), newStep) * newBelief(0);
+    double newObj = currStatePtr->getCurrObj() + pow(problem.getGamma(), newStep) * newBelief(0);
 
-    return State(newStep, newObj, newVertices, newBelief, &currState);
+    return new State(newStep, newObj, newVertices, newBelief, currStatePtr);
 
 }
 

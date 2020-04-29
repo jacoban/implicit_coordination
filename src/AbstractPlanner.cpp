@@ -47,7 +47,8 @@ void AbstractPlanner::logResults() const
         file << path.first << " ";
         for(int vertex: path.second){
             file << vertex << " ";
-        }        
+        }
+        file << "\n";        
     }
     
     file.close();    

@@ -11,13 +11,13 @@ class State
 {
 
 public:
-    State(int step, double currObj, std::unordered_map<int, int> currVertices, Eigen::VectorXd belief, State* parent);
+    State(int step, double currObj, std::unordered_map<int, int> currVertices, Eigen::RowVectorXd belief, State* parent);
 
     int getStep() const;
 
     double getCurrObj() const;
 
-    Eigen::VectorXd getBelief() const;
+    Eigen::RowVectorXd getBelief() const;
 
     std::vector<int> getPathToThisState(int robotId);
 
@@ -34,7 +34,7 @@ private:
 
     std::unordered_map<int, int> currVertices;
 
-    Eigen::VectorXd belief;
+    Eigen::RowVectorXd belief;
 
     State* parent;
 

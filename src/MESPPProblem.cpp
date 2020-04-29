@@ -48,7 +48,7 @@ std::unordered_map<int, int> MESPPProblem::getStartingVertices() const
     return startingVertices;
 }
 
-Eigen::VectorXd MESPPProblem::getStartingBelief() const
+Eigen::RowVectorXd MESPPProblem::getStartingBelief() const
 {
     return startingBelief;
 }
@@ -68,9 +68,9 @@ Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> MESPPProblem::getCMatrix(i
     return CMatrices.at(robotId).at(vertexId);
 }
 
-State MESPPProblem::getInitialState() const
+State* MESPPProblem::getInitialState() const
 {
-    return State(0, 0, startingVertices, startingBelief, nullptr);
+    return new State(0, 0, startingVertices, startingBelief, nullptr);
 }
 
 void MESPPProblem::loadStartInfo(){
@@ -121,7 +121,7 @@ void MESPPProblem::loadStartInfo(){
     std::getline(file, line);
     double val;
     linestream = std::stringstream(line);
-    startingBelief = Eigen::VectorXd(nVertices + 1);
+    startingBelief = Eigen::RowVectorXd(nVertices + 1);
     int i = 0;
     while(linestream >> val){
         startingBelief[i] = val;

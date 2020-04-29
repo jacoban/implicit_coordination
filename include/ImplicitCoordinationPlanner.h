@@ -21,11 +21,13 @@ private:
 
     std::unordered_map<int, std::vector<int>> getInitialPaths();
 
+    std::vector<State*> exploredStates;
+
     void planRound();
 
     void updateSingle(int robotId);
     
-    State getNewState(State& currState, int robotId, int nextVertex);
+    State* getNewState(State* currState, int robotId, int nextVertex);
 
 };
 
