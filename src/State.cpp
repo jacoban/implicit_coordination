@@ -1,5 +1,4 @@
 #include "State.h"
-#include <iostream>
 
 State::State(int step, double currObj, std::unordered_map<int, int> currVertices, Eigen::RowVectorXd belief, State* parent): 
 step(step), currObj(currObj), currVertices(currVertices), belief(belief), parent(parent)
