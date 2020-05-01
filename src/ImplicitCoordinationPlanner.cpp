@@ -61,7 +61,7 @@ void ImplicitCoordinationPlanner::updateSingle(int robotId)
     exploredStates.clear();
 }
 
-State* ImplicitCoordinationPlanner::getNewState(State* currStatePtr, int robotId, int newVertex)
+State* ImplicitCoordinationPlanner::getNewState(State* currStatePtr, int robotId, int newVertex) const
 {
     std::unordered_map<int, int> newVertices;
 
@@ -96,7 +96,7 @@ State* ImplicitCoordinationPlanner::getNewState(State* currStatePtr, int robotId
 
 }
 
-std::unordered_map<int, std::vector<int>> ImplicitCoordinationPlanner::getInitialPaths()
+std::unordered_map<int, std::vector<int>> ImplicitCoordinationPlanner::getInitialPaths() const
 {
     std::unordered_map<int, int> initialVertices = problem.getStartingVertices();
 

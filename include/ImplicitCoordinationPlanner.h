@@ -19,7 +19,7 @@ protected:
 
 private:
 
-    std::unordered_map<int, std::vector<int>> getInitialPaths();
+    std::unordered_map<int, std::vector<int>> getInitialPaths() const;
 
     std::vector<State*> exploredStates;
 
@@ -27,7 +27,7 @@ private:
 
     void updateSingle(int robotId);
     
-    State* getNewState(State* currState, int robotId, int nextVertex);
+    State* getNewState(State* currState, int robotId, int nextVertex) const;
 
 };
 
