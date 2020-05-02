@@ -40,10 +40,10 @@ double MESPPProblem::getNRounds() const
 
 int MESPPProblem::getStartVertexByRobot(int robotId) const
 {
-    return startingVertices.at(robotId);
+    return startingVertices[robotId];
 }
 
-std::unordered_map<int, int> MESPPProblem::getStartingVertices() const
+std::vector<int> MESPPProblem::getStartingVertices() const
 {
     return startingVertices;
 }
@@ -106,16 +106,14 @@ void MESPPProblem::loadStartInfo(){
 
     // read startingVertices
     std::getline(file, line);
-    int robotId = 1;
     int vertex;
+    nRobots = 0;
     linestream = std::stringstream(line);
 
     while(linestream >> vertex){
-        startingVertices.insert({robotId, vertex});
-        robotId += 1;
+        startingVertices.push_back(vertex);
+        nRobots += 1;
     }
-
-    nRobots = robotId - 1;
 
     // read startingBelief
     std::getline(file, line);
@@ -211,7 +209,7 @@ void MESPPProblem::loadCaptureMatrices(){
         //std::cout << robotId << vertexId << std::endl;
         //std::cout << CMatrix << std::endl;
 
-        CMatrices[robotId][vertexId] = CMatrix;
+        CMatrices[robotId - 1][vertexId] = CMatrix;
 
     }
 }

@@ -2,7 +2,6 @@
 #define INCLUDE_ABSTRACTPLANNER_H_
 
 #include <chrono>
-#include <unordered_map>
 #include <vector>
 #include <fstream>
 #include <Eigen/Core>
@@ -31,7 +30,7 @@ protected:
 
     double bestObj;
 
-    std::unordered_map<int, std::vector<int>> bestPaths;
+    std::vector<std::vector<int>> bestPaths;
 
 private:
 

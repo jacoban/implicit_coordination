@@ -42,10 +42,10 @@ void AbstractPlanner::logResults() const
 
     file.open(logFolderPath + "/paths.txt");
     
-    for (const auto &path : bestPaths) 
+    for (int i = 0; i < problem.getNRobots(); i++) 
     {
-        file << path.first << " ";
-        for(int vertex: path.second){
+        file << i + 1 << " ";
+        for(int vertex: bestPaths[i]){
             file << vertex << " ";
         }
         file << "\n";        

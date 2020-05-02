@@ -19,7 +19,7 @@ protected:
 
 private:
 
-    std::unordered_map<int, std::vector<int>> getInitialPaths() const;
+    std::vector<std::vector<int>> getInitialPaths() const;
 
     std::vector<State*> exploredStates;
 

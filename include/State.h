@@ -1,7 +1,6 @@
 #ifndef INCLUDE_STATE_H_
 #define INCLUDE_STATE_H_
 
-#include <unordered_map>
 #include <vector>
 #include <set>
 
@@ -11,7 +10,7 @@ class State
 {
 
 public:
-    State(int step, double currObj, std::unordered_map<int, int> currVertices, Eigen::RowVectorXd belief, State* parent);
+    State(int step, double currObj, std::vector<int> currVertices, Eigen::RowVectorXd belief, State* parent);
 
     int getStep() const;
 
@@ -32,7 +31,7 @@ private:
 
     double currObj;
 
-    std::unordered_map<int, int> currVertices;
+    std::vector<int> currVertices;
 
     Eigen::RowVectorXd belief;
 

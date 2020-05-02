@@ -34,7 +34,7 @@ public:
 
     int getStartVertexByRobot(int robotId) const;
 
-    std::unordered_map<int, int> getStartingVertices() const;
+    std::vector<int> getStartingVertices() const;
 
     Eigen::RowVectorXd getStartingBelief() const;
 
@@ -60,7 +60,7 @@ private:
 
     int nRounds;
 
-    std::unordered_map<int, int> startingVertices;
+    std::vector<int> startingVertices;
 
     Eigen::RowVectorXd startingBelief;
 

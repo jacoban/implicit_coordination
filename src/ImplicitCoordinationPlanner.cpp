@@ -17,7 +17,7 @@ void ImplicitCoordinationPlanner::makePlanImpl()
 
 void ImplicitCoordinationPlanner::planRound()
 {
-    for(int i = 1; i <= problem.getNRobots(); i++){
+    for(int i = 0; i < problem.getNRobots(); i++){
         std::cout << "Updating path of robot " << i << std::endl;
         updateSingle(i);
     }
@@ -63,19 +63,19 @@ void ImplicitCoordinationPlanner::updateSingle(int robotId)
 
 State* ImplicitCoordinationPlanner::getNewState(State* currStatePtr, int robotId, int newVertex) const
 {
-    std::unordered_map<int, int> newVertices;
+    std::vector<int> newVertices;
 
     int newStep = currStatePtr->getStep() + 1;
     
-    for(int i = 1; i <= problem.getNRobots(); i++)
+    for(int i = 0; i < problem.getNRobots(); i++)
     {
         if(i == robotId)
         {
-            newVertices.insert({robotId, newVertex});
+            newVertices.push_back(newVertex);
         }
         else
         {
-            newVertices.insert({i, bestPaths.at(i)[newStep]});
+            newVertices.push_back(bestPaths[i][newStep]);
         }
     }
 
@@ -85,9 +85,9 @@ State* ImplicitCoordinationPlanner::getNewState(State* currStatePtr, int robotId
     Eigen::RowVectorXd newBelief = currStatePtr->getBelief() * problem.getMMatrix();
 
     // then apply capture matrices
-    for(int i = 1; i <= problem.getNRobots(); i++)
+    for(int i = 0; i < problem.getNRobots(); i++)
     {
-        newBelief = newBelief * problem.getCMatrix(i, newVertices.at(i));
+        newBelief = newBelief * problem.getCMatrix(i, newVertices[i]);
     }
 
     double newObj = currStatePtr->getCurrObj() + pow(problem.getGamma(), newStep) * newBelief(0);
@@ -96,16 +96,15 @@ State* ImplicitCoordinationPlanner::getNewState(State* currStatePtr, int robotId
 
 }
 
-std::unordered_map<int, std::vector<int>> ImplicitCoordinationPlanner::getInitialPaths() const
+std::vector<std::vector<int>> ImplicitCoordinationPlanner::getInitialPaths() const
 {
-    std::unordered_map<int, int> initialVertices = problem.getStartingVertices();
+    std::vector<int> initialVertices = problem.getStartingVertices();
 
-    std::unordered_map<int, std::vector<int>> initialPaths;
+    std::vector<std::vector<int>> initialPaths;
 
-    for (const auto &pair : initialVertices) 
+    for (int i = 0; i < initialVertices.size(); i++) 
     {
-        int robotId = pair.first;
-        int vertexId = pair.second;
+        int vertexId = initialVertices[i];
 
         std::vector<int> initialPath;
 
@@ -114,7 +113,7 @@ std::unordered_map<int, std::vector<int>> ImplicitCoordinationPlanner::getInitia
             initialPath.push_back(vertexId);
         }
 
-        initialPaths.insert({robotId, initialPath});
+        initialPaths.push_back(initialPath);
               
     }
 
