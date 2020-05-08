@@ -1,6 +1,6 @@
 # implicit_coordination
 
-The brute-force version of the implicit coordination algorithm for multirobot non-adversarial search described in Hollinger et al., IJRR 2009. The algorithm is implemented in C++.
+The brute-force version of the implicit coordination algorithm for multirobot non-adversarial search described in Hollinger et al., IJRR 2009. The algorithm is implemented in C++. For input / output and usage, see the docs folder.
 
 ## Installation
 1. Install [ROS](http://www.ros.org/)
