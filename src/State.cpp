@@ -26,8 +26,6 @@ std::vector<int> State::getPathToThisState(int robotId)
 
     State* currState = this;
 
-    int count = 0;
-
     while(currState != nullptr)
     {
         path.push_back(currState->currVertices[robotId]);
