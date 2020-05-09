@@ -10,7 +10,7 @@ void ImplicitCoordinationPlanner::makePlanImpl()
     bestPaths = getInitialPaths();
 
     for(int i = 0; i < problem.getNRounds(); i++){
-        std::cout << "First round of planning..." << std::endl;
+        std::cout << "Round of planning " << i << std::endl;
         planRound();
     }
 }
