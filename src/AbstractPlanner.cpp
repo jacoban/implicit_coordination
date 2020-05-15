@@ -10,6 +10,7 @@ void AbstractPlanner::makePlan()
 
     std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
 
+    bestObj = 0;
     makePlanImpl();
 
     totTime = std::chrono::steady_clock::now() - t0;
