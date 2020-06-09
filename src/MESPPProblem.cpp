@@ -23,17 +23,17 @@ double MESPPProblem::getGamma() const
     return gamma;
 }
 
-double MESPPProblem::getNVertices() const
+int MESPPProblem::getNVertices() const
 {
     return nVertices;
 }
 
-double MESPPProblem::getNRobots() const
+int MESPPProblem::getNRobots() const
 {
     return nRobots;
 }
 
-double MESPPProblem::getNRounds() const
+int MESPPProblem::getNRounds() const
 {
     return nRounds;
 }

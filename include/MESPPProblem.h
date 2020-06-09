@@ -26,11 +26,11 @@ public:
 
     double getGamma() const;
 
-    double getNVertices() const;
+    int getNVertices() const;
 
-    double getNRobots() const;
+    int getNRobots() const;
 
-    double getNRounds() const;
+    int getNRounds() const;
 
     int getStartVertexByRobot(int robotId) const;
 
